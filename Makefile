@@ -56,7 +56,8 @@ LD = $(TOOLPREFIX)ld
 OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
-CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb -gdwarf-2
+#CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb -gdwarf-2
+CFLAGS = -Wall -Werror -O0 -fno-omit-frame-pointer -ggdb -gdwarf-2
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
@@ -103,7 +104,7 @@ $U/usys.o : $U/usys.S
 $U/_forktest: $U/forktest.o $(ULIB)
 	# forktest has less library code linked in - needs to be small
 	# in order to be able to max out the proc table.
-	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $U/_forktest $U/forktest.o $U/ulib.o $U/usys.o
+	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $U/_forktest $U/forktest.o $U/ulib.o $U/usys.o $U/printf.o
 	$(OBJDUMP) -S $U/_forktest > $U/forktest.asm
 
 mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
